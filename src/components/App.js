@@ -4,6 +4,7 @@ import "../styles/App.css";
 import CreateLink from "./CreateLink";
 import LinkList from "./LinkList";
 import Header from "./Header";
+import Login from "./Login";
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={LinkList} />
             <Route exact path="/create" component={CreateLink} />
+            <Route exact path="/login" component={Login} />
           </Switch>
         </div>
       </div>
