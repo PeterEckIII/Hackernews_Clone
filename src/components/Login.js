@@ -72,19 +72,19 @@ class Login extends Component {
           >
             {mutation => (
               <div className="pointer mr2 button" onClick={mutation}>
-                {login
-                  ? "need to create an account"
-                  : "already have an account?"}
+                {login ? "login" : "create account"}
               </div>
             )}
           </Mutation>
-          <div className="pointer mr2 button" onClick={() => this._confirm}>
+          <div className="pointer button" onClick={() => this._confirm}>
             {login ? "login" : "create account"}
           </div>
           <div
             className="pointer button"
             onClick={() => this.setState({ login: !login })}
-          />
+          >
+            {login ? "need to create an account?" : "already have an account?"}
+          </div>
         </div>
       </>
     );
