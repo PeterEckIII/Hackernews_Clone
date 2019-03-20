@@ -6,7 +6,7 @@ import { NEW_VOTE_SUBSCRIPTION, NEW_LINK_SUBSCRIPTION } from "../operations/Subs
 import { FEED_QUERY } from "../operations/Query";
 
 class LinkList extends Component {
-  _updateCacheAfterVote = (store, createVote, linkId) => {
+  updateCacheAfterVote = (store, createVote, linkId) => {
     const isNewPage = this.props.location.pathname.includes('new');
     const page = parseInt(this.props.match.params.page, 10);
 
@@ -23,7 +23,7 @@ class LinkList extends Component {
     store.writeQuery({ query: FEED_QUERY, data })
   }
 
-  _subscribeToNewLinks = async (subscribeToMore) => {
+  subscribeToNewLinks = async (subscribeToMore) => {
     subscribeToMore({
       document: NEW_LINK_SUBSCRIPTION,
       updateQuery: (prev, { subscriptionData }) => {
@@ -43,13 +43,13 @@ class LinkList extends Component {
     })
   }
 
-  _subscribeToNewVotes = subscribeToMore => {
+  subscribeToNewVotes = subscribeToMore => {
     subscribeToMore({
       document: NEW_VOTE_SUBSCRIPTION
     })
   }
 
-  _getQueryVariables = (props) => {
+  getQueryVariables = (props) => {
     const isNewPage = this.props.location.pathname.includes('new');
     const page = parseInt(this.props.match.params.page, 10);
 
@@ -59,7 +59,7 @@ class LinkList extends Component {
     return { first, skip, orderBy };
   }
 
-  _getLinksToRender = data => {
+  getLinksToRender = data => {
     const isNewPage = this.props.location.pathname.includes('new');
     if (isNewPage) {
       return data.feed.links;
@@ -69,7 +69,7 @@ class LinkList extends Component {
     return rankedLinks;
   }
 
-  _nextPage = data => {
+  renderNextPage = data => {
     const page = parseInt(this.props.match.params.page, 10);
     if (page <= data.feed.count / LINKS_PER_PAGE) {
       const nextPage = page + 1;
@@ -77,7 +77,7 @@ class LinkList extends Component {
     }
   }
 
-  _previousPage = () => {
+  renderPreviousPage = () => {
     const page = parseInt(this.props.match.params.page, 10);
     if (page > 1) {
       const previousPage = page - 1;
@@ -87,12 +87,12 @@ class LinkList extends Component {
 
   render() {
     return (
-      <Query query={FEED_QUERY} variables={this._getQueryVariables()}>
+      <Query query={FEED_QUERY} variables={this.getQueryVariables()}>
         {({ loading, error, data, subscribeToMore }) => {
           if (loading) return <div>Fetching...</div>;
           if (error) return <div>Error</div>;
-          this._subscribeToNewLinks(subscribeToMore);
-          this._subscribeToNewVotes(subscribeToMore);
+          this.subscribeToNewLinks(subscribeToMore);
+          this.subscribeToNewVotes(subscribeToMore);
           const linksToRender = this._getLinksToRender(data);
           const isNewPage = this.props.location.pathname.includes('new');
           const pageIndex = this.props.match.params.page
@@ -106,14 +106,14 @@ class LinkList extends Component {
                   key={link.id}
                   link={link}
                   index={index}
-                  updateStoreAfterVote={this._updateCacheAfterVote} />
+                  updateStoreAfterVote={this.updateCacheAfterVote} />
               ))}
               {isNewPage && (
                 <div className="flex ml4 mv3 gray">
-                  <div className="pointer mr2" onClick={this._previousPage}>
+                  <div className="pointer mr2" onClick={this.renderPreviousPage}>
                     Previous
                 </div>
-                  <div className="pointer" onClick={() => this._nextPage(data)}>
+                  <div className="pointer" onClick={() => this.renderNextPage(data)}>
                     Next
                 </div>
                 </div>

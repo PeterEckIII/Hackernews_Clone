@@ -11,13 +11,13 @@ class Login extends Component {
     name: ""
   };
 
-  _confirm = async data => {
+  confirm = async data => {
     const { token } = this.state.login ? data.login : data.signup;
-    this._saveUserData(token);
+    this.saveUserData(token);
     this.props.history.push("/");
   };
 
-  _saveUserData = token => {
+  saveUserData = token => {
     localStorage.setItem(AUTH_TOKEN, token);
   };
 
@@ -52,7 +52,7 @@ class Login extends Component {
           <Mutation
             mutation={login ? LOGIN_MUTATION : SIGNUP_MUTATION}
             variables={{ email, password, name }}
-            onCompleted={data => this._confirm(data)}
+            onCompleted={data => this.confirm(data)}
           >
             {mutation => (
               <div className="pointer mr2 button" onClick={mutation}>
@@ -60,7 +60,7 @@ class Login extends Component {
               </div>
             )}
           </Mutation>
-          <div className="pointer button" onClick={() => this._confirm}>
+          <div className="pointer button" onClick={() => this.confirm}>
             {login ? "login" : "create account"}
           </div>
           <div
