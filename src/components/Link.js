@@ -1,28 +1,9 @@
 import React from "react";
 // import { className } from "postcss-selector-parser";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
 import { AUTH_TOKEN as authToken } from "../constants";
 import timeDifferenceForDate from "../utils";
-
-const VOTE_MUTATION = gql`
-  mutation VoteMutation($linkId: ID!) {
-    vote(linkId: $linkId) {
-      id
-      link {
-        votes {
-          id
-          user {
-            id
-          }
-        }
-      }
-      user {
-        id
-      }
-    }
-  }
-`;
+import { VOTE_MUTATION } from "../operations/Mutation";
 
 const Link = props => {
   return (

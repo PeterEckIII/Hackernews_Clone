@@ -1,80 +1,9 @@
 import React, { Component } from "react";
 import Link from "./Link";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
 import { LINKS_PER_PAGE } from "../constants";
-
-export const FEED_QUERY = gql`
-  query FeedQuery($first: Int, $skip: Int, $orderBy: LinkOrderByInput) {
-    feed(first: $first, skip: $skip, orderBy: $orderBy) {
-      links {
-        id
-        createdAt
-        url
-        description
-        postedBy {
-          id
-          name
-        }
-        votes {
-          id
-          user {
-            id
-          }
-        }
-      }
-      count
-    }
-  } 
-`;
-
-const NEW_LINK_SUBSCRIPTION = gql`
-  subscription {
-    newLink {
-      id
-      url
-      description
-      createdAt
-      postedBy {
-        id
-        name
-      }
-      votes {
-        id
-        user {
-          id
-        }
-      }
-    }
-  }
-`;
-
-const NEW_VOTE_SUBSCRIPTION = gql`
-  subscription {
-    newVote {
-      id
-      link {
-        id
-        url
-        description
-        createdAt
-        postedBy {
-          id
-          name
-        }
-        votes {
-          id
-          user {
-            id
-          }
-        }
-        user {
-          id
-        }
-      }
-    }
-  }
-`;
+import { NEW_VOTE_SUBSCRIPTION, NEW_LINK_SUBSCRIPTION } from "../operations/Subscription";
+import { FEED_QUERY } from "../operations/Query";
 
 class LinkList extends Component {
   _updateCacheAfterVote = (store, createVote, linkId) => {
